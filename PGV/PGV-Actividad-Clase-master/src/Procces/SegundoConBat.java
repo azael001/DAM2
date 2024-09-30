@@ -11,9 +11,9 @@ public class SegundoConBat {
 
         Runtime rt1 = Runtime.getRuntime();
         try{
-//            Process pro1 = pb1.start();
+            Process pro1 = pb1.start();
 
-            Process pro2 = rt1.exec(comando2);
+//            Process pro2 = rt1.exec(comando2);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

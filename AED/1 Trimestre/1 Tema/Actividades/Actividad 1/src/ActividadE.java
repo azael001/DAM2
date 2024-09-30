@@ -5,9 +5,10 @@ public class ActividadE {
         File file = new File("./src/d.txt");
         try {
             FileOutputStream fo = new FileOutputStream(file);
-            for (int i = 0; i<50; i++){
 
-                fo.write(i);
+            for (int i = 0; i<50; i++){
+                String pepe =Integer.toString(i);
+                fo.write(pepe.getBytes());
                 fo.flush();
             }
 
