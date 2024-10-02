@@ -7,6 +7,13 @@ import java.util.RandomAccess;
 import java.util.Scanner;
 
 public class Main {
+    public static int nClubTam = 4;
+    public static int nomClubTam = 25;
+    public static int presidentTam = 15;
+    public static int telTam = 9;
+    public static int localTam = 20;
+    public static int totalTamPos = nClubTam + ((nomClubTam + presidentTam + telTam + localTam) * 2);
+
     public static void main(String[] args) {
         //En esta parte del ejercicio escribiremos en un fichero
         File equipoFutbol = new File("./src/datosEquipos.txt");
@@ -66,30 +73,33 @@ public class Main {
                     // El tamaño del int será 4 Bits
                     alea.writeInt(nClub[u]);
                     StringBuffer bufferPresident = new StringBuffer(president[u]);
-                    bufferPresident.setLength(15);
+                    bufferPresident.setLength(presidentTam);
                     //El tamaño del nombre del presidente medirá 15- es decir 30 bits en total 34
-                    for (int j = president[u].length(); j < 15; j++) {
+                    for (int j = president[u].length(); j < presidentTam; j++) {
                         bufferPresident.setCharAt(j, ' ');
                     }
+
                     alea.writeChars(bufferPresident.toString());
                     StringBuffer bufferTel = new StringBuffer(telClub[u]);
                     StringBuffer bufferNomClub = new StringBuffer(nomClub[u]);
-                    bufferNomClub.setLength(25);
+                    bufferNomClub.setLength(nomClubTam);
                     //El tamaño del nombre del club medirá 25 - es decir 50 bits en total 84
-                    for (int c = nomClub[u].length(); c < 25; c++) {
+                    for (int c = nomClub[u].length(); c < nomClubTam; c++) {
                         bufferNomClub.setCharAt(c, ' ');
                     }
+
                     alea.writeChars(bufferNomClub.toString());
-                    bufferTel.setLength(9);
+                    bufferTel.setLength(telTam);
                     // El tamaño del telefono medirá 9 - es decir 18 bits en total 102
-                    for (int t = telClub[u].length(); t < 9; t++) {
+                    for (int t = telClub[u].length(); t < telTam; t++) {
                         bufferTel.setCharAt(t, ' ');
                     }
+
                     alea.writeChars(bufferTel.toString());
                     StringBuffer bufferLocal = new StringBuffer(local[u]);
-                    bufferLocal.setLength(20);
+                    bufferLocal.setLength(localTam);
                     //El tamaño de la localidad medirá 20 - es decir 40 bits en total 142
-                    for (int l = local[u].length(); l < 20; l++) {
+                    for (int l = local[u].length(); l < localTam; l++) {
                         bufferLocal.setCharAt(l, ' ');
                     }
                     alea.writeChars(bufferLocal.toString());
@@ -107,12 +117,11 @@ public class Main {
         }
 
 
-            cambiarNumero();
-            leerNúmero();
+        cambiarNumero();
+        leerNúmero();
         leerEquipos();
         leerEquiposObj();
         leerEquiposAsc();
-          ObjToJason();
         leerJason();
     }
 
@@ -135,6 +144,7 @@ public class Main {
             } else {
                 try {
                     Integer.parseInt(numeroNuevo);
+
                     break;
 
                 } catch (NumberFormatException e) {
@@ -154,9 +164,9 @@ public class Main {
                 aleat.seek(pos);
                 int a = aleat.readInt();
                 if (nuClub == a) {
-                    aleat.seek(pos + 4);
+                    aleat.seek(pos + 84);
                     aleat.writeChars(numeroNuevo);
-                    aleat.seek(pos + 4);
+                    aleat.seek(pos + 84);
                     for (int i = 0; i < ctel.length; i++) {
                         auxx = aleat.readChar();
                         ctel[i] = auxx;
@@ -177,19 +187,20 @@ public class Main {
     }
 
     //Este método simplemente te pasa por consola el número asignado a el presidente Pepito Rojo
+
     private static void leerNúmero() {
         File fr = new File("./src/datosEquipos.dat");
         //Le estamos pasando el presidente por un String y nos sale directamente el número
         String nombrePresident = "Pepito Rojo";
         char cPresident[] = new char[15], aux;
-        char ctel[] = new char[9], auxx;
+        char ctel[] = new char[telTam], auxx;
 
         try {
             RandomAccessFile aleat = new RandomAccessFile(fr, "rw");
-            int pos = 4;
+            int pos = nClubTam;
             while (true) {
                 aleat.seek(pos);
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < presidentTam; i++) {
                     aux = aleat.readChar();
                     cPresident[i] = aux;
                 }
@@ -205,13 +216,14 @@ public class Main {
                     break;
 
                 }
-                pos = pos + 142;
+                pos = pos + totalTamPos;
             }
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             System.out.println("No existe el Presidente");
+
         }
     }
 
@@ -223,10 +235,10 @@ public class Main {
         try {
             RandomAccessFile aleat = new RandomAccessFile(fr, "r");
             int id, pos = 0;
-            char cPresident[] = new char[15], auxP;
-            char cNomClub[] = new char[25], auxN;
-            char cTelClub[] = new char[9], auxT;
-            char cLocal[] = new char[20], auxL;
+            char cPresident[] = new char[presidentTam], auxP;
+            char cNomClub[] = new char[nomClubTam], auxN;
+            char cTelClub[] = new char[telTam], auxT;
+            char cLocal[] = new char[localTam], auxL;
             int numArray = 0;
 
 
@@ -260,7 +272,7 @@ public class Main {
                 arrayObj.add(equipoObj);
 
 
-                pos = pos + 142;
+                pos = pos + totalTamPos;
             }
 
         } catch (FileNotFoundException e) {
@@ -287,12 +299,12 @@ public class Main {
     private static void leerEquiposObj() {
         File fl = new File("./src/datosEquipos.obj");
         ArrayList<ObjEquipos> equipos = new ArrayList<>();
-        int nClub[]= new int[3];
+        int nClub[] = new int[3];
         String cPresident[] = new String[3];
         String cNomClub[] = new String[3];
         String cTelClub[] = new String[3];
         String cLocal[] = new String[3];
-        int numV=0;
+        int numV = 0;
         try {
             FileInputStream fi = new FileInputStream(fl);
             ObjectInputStream obi = new ObjectInputStream(fi);
@@ -306,21 +318,27 @@ public class Main {
         }
         for (ObjEquipos e : equipos) {
             System.out.println(e);
-            nClub[numV]=e.getnClub();
-            cPresident[numV] =e.getPresident();
+            nClub[numV] = e.getnClub();
+            cPresident[numV] = e.getPresident();
             cNomClub[numV] = e.getNomClub();
             cTelClub[numV] = e.getTel();
             cLocal[numV] = e.getLocal();
             numV++;
         }
+
         try {
             File file = new File("./src/Equipos.asc");
             FileWriter fw = new FileWriter(file);
-            for(int i = 0; i<nClub.length; i++) {
-                fw.write(nClub[i] + "," + cPresident[i]+ ","+ cNomClub[i] + ","+ cTelClub[i]+ ","+ cLocal[i] + "\n");
-
-                fw.flush();
+            FileOutputStream fo = new FileOutputStream(file);
+            DataOutputStream dos = new DataOutputStream(fo);
+            for (int i = 0; i < nClub.length; i++) {
+                dos.writeInt(nClub[i]);
+                dos.writeUTF(cPresident[i]);
+                dos.writeUTF(cNomClub[i]);
+                dos.writeUTF(cTelClub[i]);
+                dos.writeUTF(cLocal[i]);
             }
+            fw.flush();
             fw.close();
 
         } catch (Exception ex) {
@@ -328,71 +346,60 @@ public class Main {
         }
 
     }
-    //Este método como su nombre indica leerá archivos asci
+
+    //Este método como su nombre indica leerá archivos asci y escribirá en json
     private static void leerEquiposAsc() {
         File fl = new File("./src/Equipos.asc");
         try {
-            FileReader fr = new FileReader(fl);
-            BufferedReader bf = new BufferedReader(fr);
-            String linea;
-            String numero[]=new String[5];
-            int numero200;
-            String numeroString;
-            while((linea =bf.readLine())!=null){
-
-                   String [] partes = linea.split(",");
-                   numero200= Integer.parseInt(partes[0]);
-                   if ((numero200 > 200) && (numero200<300)) {
-                       System.out.println(linea);
-                   }
-
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-    //Este será el último apartado leerá todos los objetos y escribirá un  jason
-    private static void ObjToJason(){
-        File fl = new File("./src/datosEquipos.obj");
-        ArrayList<ObjEquipos> equipos = new ArrayList<>();
-        Gson gson = new Gson();
-        String json ;
-        try {
             FileInputStream fi = new FileInputStream(fl);
-            ObjectInputStream obi = new ObjectInputStream(fi);
-            equipos = (ArrayList<ObjEquipos>) obi.readObject();
-            json = gson.toJson(equipos);
-            try{
-                File f = new File("./src/Equipos.json");
-                FileWriter fw =new FileWriter(f);
-                fw.write(json);
-                fw.flush();
+            DataInputStream dis = new DataInputStream(fi);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            ArrayList<ObjEquipos> equipos = new ArrayList<>();
+            Gson gson = new Gson();
+            String json;
+
+            while (dis.available() > 0) {
+                int numero200 = dis.readInt();
+                String cPresident = dis.readUTF();
+                String cNomClub = dis.readUTF();
+                String cTelClub = dis.readUTF();
+                String cLocal = dis.readUTF();
+
+                ObjEquipos equipo = new ObjEquipos(numero200, cPresident, cNomClub, cTelClub, cLocal);
+                equipos.add(equipo);
+                json = gson.toJson(equipos);
+                try {
+                    File f = new File("./src/Equipos.json");
+                    FileWriter fw = new FileWriter(f);
+                    fw.write(json);
+                    fw.flush();
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                // Filtrar los números de club entre 200 y 300
+                if (numero200 > 200 && numero200 < 300) {
+                    System.out.println(numero200 + "," + cPresident + "," + cNomClub + "," + cTelClub + "," + cLocal);
+                }
             }
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
 
 
-
     }
-    private static void leerJason(){
+
+    private static void leerJason() {
         File fl = new File("./src/Equipos.json");
-        try{
+        try {
             FileReader fr = new FileReader(fl);
             BufferedReader bf = new BufferedReader(fr);
 
             String linea;
-            while((linea=bf.readLine())!=null){
+            while ((linea = bf.readLine()) != null) {
                 System.out.println(linea);
             }
 
@@ -402,8 +409,10 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-
 }
+
+
+
 
 
 

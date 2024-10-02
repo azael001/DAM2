@@ -8,7 +8,7 @@ public class ObjEquipos implements Serializable {
     String local;
 
 
-    public ObjEquipos(int nClub, String nomClub, String president, String tel, String local) {
+    public ObjEquipos(int nClub, String president,String nomClub, String tel, String local) {
         this.nClub = nClub;
         this.nomClub = nomClub;
         this.president = president;
