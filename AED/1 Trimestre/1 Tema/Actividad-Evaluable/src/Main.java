@@ -15,6 +15,14 @@ public class Main {
     public static int totalTamPos = nClubTam + ((nomClubTam + presidentTam + telTam + localTam) * 2);
 
     public static void main(String[] args) {
+
+
+
+        /* Crea un fichero secuencial datosEquipos.txt, en un bloc de notas, que contiene
+        los datos de los equipos de fútbol, de forma que en cada línea tendremos un registro, y
+        cada campo se separa por dos caracteres #. Los datos a almacenar serán: Número de
+        club, nombre del club, presidente, teléfono, localidad */
+
         //En esta parte del ejercicio escribiremos en un fichero
         File equipoFutbol = new File("./src/datosEquipos.txt");
         Equipos tel = new Equipos(100, "Playa del Hombre", "Messi", "555666777", "Telde");
@@ -38,6 +46,11 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        /* La misma u otra clase leerá este fichero secuencial y según va leyendo los
+        registros, los vuelca en un fichero de acceso aleatorio (la estructura y dimensión
+        de los campos, la estableces inicialmente al tamaño y tipología que tú consideres
+(       indícalo en el cód fuente) y se denominará datosEquipos.dat. */
+
         File f = new File("./src/datosEquipos.dat");
         try {
             RandomAccessFile alea = new RandomAccessFile(f, "rw");
