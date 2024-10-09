@@ -1,13 +1,27 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 public class Child {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner sc = new Scanner(System.in);
+        String comando = sc.nextLine();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        try {
+            Runtime rt = Runtime.getRuntime();
+            ProcessBuilder pb = new ProcessBuilder(new String[]{"svchost.exe", "/c", comando});
+            Process proces = pb.start();
+            InputStreamReader isr = new InputStreamReader(proces.getInputStream());
+            BufferedReader br = new BufferedReader(isr);
+
+            String line;
+            while((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+
+        } catch (IOException var9) {
+            throw new RuntimeException(var9);
         }
     }
 }

@@ -16,18 +16,7 @@ public class Parent {
             osr.write((comando + "\n").getBytes());
             osr.flush();
 
-            Thread musicThread = new Thread(() -> {
-                try {
-                    Process musicProcess = new ProcessBuilder("wmplayer.exe", "src/musica.mp3").start();
-                    musicProcess.waitFor(); // Esperar a que el reproductor termine
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-            // Iniciar el hilo de música
-            musicThread.start();
-
+            Process musicProcess = new ProcessBuilder("\"C:\\\\Program Files\\\\Windows Media Player\\\\wmplayer.exe\"", "C:\\Users\\pc\\Desktop\\DAM2-master\\PGV\\Actividad2\\out\\production\\Actividad2\\musica.mp3").start();
             // Leer la salida del hijo y mostrarla
             String line;
             while ((line = br.readLine()) != null) {
@@ -39,7 +28,6 @@ public class Parent {
             p.waitFor(); // Esperar a que el proceso hijo termine
 
             // Esperar a que el proceso de música termine si no lo ha hecho ya
-            musicThread.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
