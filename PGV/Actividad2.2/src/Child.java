@@ -5,21 +5,18 @@ import java.util.Scanner;
 
 public class Child {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String comando = sc.nextLine();
-
         try {
-            Runtime rt = Runtime.getRuntime();
-            ProcessBuilder pb = new ProcessBuilder(new String[]{"svchost.exe", "/c", comando});
+            // Abre una ventana de cmd y ejecuta 'tasklist'
+            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/C", "tasklist /SVC /FO LIST");
             Process proces = pb.start();
-            InputStreamReader isr = new InputStreamReader(proces.getInputStream());
-            BufferedReader br = new BufferedReader(isr);
 
-            String line;
-            while((line = br.readLine()) != null) {
+
+             InputStreamReader isr = new InputStreamReader(proces.getInputStream());
+             BufferedReader br = new BufferedReader(isr);
+             String line;
+            while ((line=br.readLine())!=null){
                 System.out.println(line);
             }
-
         } catch (IOException var9) {
             throw new RuntimeException(var9);
         }

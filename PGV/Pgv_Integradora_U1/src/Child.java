@@ -8,7 +8,10 @@ public class Child {
             File file = new File("src/Carpeta-Integradora-Pgv");
             System.out.println("La carpeta es " + file.getName());
             String absolutePathCarpeta = file.getAbsolutePath();
-            String absolutePathBat= "C:\\Users\\pc\\Desktop\\DAM2-master\\PGV\\pgbIntegradora-master\\src\\pgv.bat";
+
+
+            //La única ruta absoluta que tiene que cambiar de  Child es esta , ya que no conseguí que se pudiera hacer con rutas relativas.
+            String absolutePathBat= "C:\\Users\\pc\\Desktop\\DAM2-master\\PGV\\Pgv_Integradora_U1\\src\\pgv.bat";
             try{
                 for (int i=0; i<file.list().length; i++){
                     String nombreArchivo= file.list()[i];
