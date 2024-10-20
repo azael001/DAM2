@@ -1,19 +1,19 @@
 package Procces;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SegundoConBat {
     public static void main(String[] args) {
         //Esto de aquí es para abrir  el notepad y el calc
-        String comando2 ="./src/Procces/a.bat";
-        ProcessBuilder pb1 = new ProcessBuilder("cmd","/c","start C:\\Users\\Alumnadomañana\\Desktop\\Clase\\a.bat");
-        String ruta = "";
-
+        File fl = new File("src/Procces/a.bat");
+        String absolutePath = fl.getAbsolutePath();
+//        ProcessBuilder pb1 = new ProcessBuilder(absolutePath);
         Runtime rt1 = Runtime.getRuntime();
         try{
-            Process pro1 = pb1.start();
+//            Process pro1 = pb1.start();
 
-//            Process pro2 = rt1.exec(comando2);
+            Process pro2 = rt1.exec(absolutePath);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
