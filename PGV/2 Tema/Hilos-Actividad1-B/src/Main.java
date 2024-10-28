@@ -30,7 +30,22 @@ public class Main {
 class Hilos extends Thread  {
     public void run(){
       for (int i= 0; i<10; i++){
-          System.out.println("El nombre del hilo es " +Thread.currentThread().getName() + "La propiedad es " + Thread.currentThread().getPriority());
+
+          System.out.println("El nombre del hilo es " +Thread.currentThread().getName() + " La propiedad es " + Thread.currentThread().getPriority());
+          if(i==4){
+              if(Thread.currentThread().getPriority() == Thread.MAX_PRIORITY){
+                  Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+              }
+              else if(Thread.currentThread().getPriority() == Thread.MIN_PRIORITY){
+                  Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+              }
+              
+          }
+          try {
+              Thread.sleep(1000);
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
       }
       
     }
