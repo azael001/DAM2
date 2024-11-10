@@ -7,6 +7,7 @@ public class Main {
         tarea1.setName("Tarea1");
         tarea2.setName("Tarea2");
         tarea3.setName("Tarea3");
+
         tarea1.setPriority(Thread.MIN_PRIORITY);
         tarea2.setPriority(Thread.NORM_PRIORITY);
         tarea3.setPriority(Thread.MAX_PRIORITY);

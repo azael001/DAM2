@@ -9,9 +9,6 @@ public class Main {
             Thread t = new Thread(new Coches(parking,i));
             t.start();
         }
-
-
-
     }
 }
 class Coches implements Runnable {
@@ -21,7 +18,6 @@ class Coches implements Runnable {
         this.parking = parking;
         this.nCoche=nCoche;
     }
-
     public void run(){
         try {
             System.out.println("El coche " + nCoche + " Está esperando");
