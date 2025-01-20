@@ -18,6 +18,9 @@ public class NormalUser extends Thread {
     public int tipoHilo = -1;
     public static final int enviar = 1;
     public static final int recibir = 2;
+    public static final int privado = 3;
+
+
 
     public NormalUser(int tipoHilo) {
         this.tipoHilo = tipoHilo;
@@ -33,22 +36,25 @@ public class NormalUser extends Thread {
         try {
             ejecucion = true;
             pedirNombre();
-            // Configuramos el socket multicast y nos conectamos al grupo
+
             socketMulticast = new MulticastSocket(puerto);
             InetAddress dir = InetAddress.getByName(direccionIPGrupo);
             grupo = new InetSocketAddress(dir, puerto);
             netIf = NetworkInterface.getByInetAddress(dir);
             socketMulticast.joinGroup(grupo, netIf);
-            // Lanzamos ambos hilos, el de enviar datos y el de recibir datos
+
             NormalUser enviarC = new NormalUser(enviar);
             NormalUser recibirC = new NormalUser(recibir);
+            NormalUser privadoC = new NormalUser(privado);
 
             enviarC.start();
             recibirC.start();
-            // Esperamos a que los hilos terminen
+            privadoC.start();
+
 
             enviarC.join();
             recibirC.join();
+            privadoC.join();
             socketMulticast.leaveGroup(grupo, netIf);
             socketMulticast.close();
             System.out.println("Socket cerrado");
@@ -68,10 +74,15 @@ public class NormalUser extends Thread {
         switch (tipoHilo) {
             case enviar:
                 runEnviar();
+                mensajePrivado();
                 break;
 
             case recibir:
                 runRecibir();
+                break;
+
+            case privado:
+                mensajePrivado();
                 break;
         }
     }
@@ -103,6 +114,39 @@ public class NormalUser extends Thread {
         } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+    }
+    private void mensajePrivado(){
+        try {
+            DatagramSocket datagramSocket = new DatagramSocket();
+            InetAddress dirservidor = InetAddress.getByName("192.168.0.23");
+
+            String mensaje = new String("Nombre:"+nombre);
+            DatagramPacket datagrama1 = new DatagramPacket(mensaje.getBytes(),
+                    mensaje.getBytes().length, dirservidor, 7668);
+            datagramSocket.send(datagrama1);
+
+            while(true){
+                byte[] respuesta = new byte[100];
+                DatagramPacket datagrama2 = new DatagramPacket(respuesta,
+                        respuesta.length);
+                datagramSocket.receive(datagrama2);
+                System.out.println("Mensaje privado: " + new String(respuesta,0,datagrama2.getLength()));
+
+                String mensaje2= "Ok recibido mensaje privado";
+                DatagramPacket datagrama3 = new DatagramPacket(mensaje2.getBytes(),
+                        mensaje2.getBytes().length, dirservidor, 7668);
+                datagramSocket.send(datagrama3);
+                if(respuesta.equals("end")){
+                    break;
+                }
+            }
+            datagramSocket.close();
+            System.out.println("el cliente termino");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

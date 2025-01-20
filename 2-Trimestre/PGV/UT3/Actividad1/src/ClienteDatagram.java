@@ -39,6 +39,10 @@ public class ClienteDatagram extends Thread {
 		}
 
 	}
+	public static void main(String args[]) {
+		ClienteDatagram c = new ClienteDatagram("Pedro");
+		c.start();
+	}
 
 		
 
